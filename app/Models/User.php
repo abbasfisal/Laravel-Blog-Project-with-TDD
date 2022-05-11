@@ -16,6 +16,7 @@ class User extends Authenticatable
      * define user types
      *
      */
+
     const type_admin = 'admin';
     const type_writer = 'writer';
     const type_user = 'user';
@@ -31,6 +32,7 @@ class User extends Authenticatable
      * define users table columns name
      *
      */
+    const col_id = 'id';
     const col_name = 'name';
     const col_email = 'email';
     const col_password = 'password';

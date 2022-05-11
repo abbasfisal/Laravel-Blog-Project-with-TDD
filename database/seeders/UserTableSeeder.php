@@ -19,10 +19,15 @@ class UserTableSeeder extends Seeder
     public function run()
     {
         $this->createAdmin();
+        $this->createWriter();
         $this->createNormallUser();
 
     }
 
+    /**
+     * create Admin
+     *
+     */
     private function createAdmin(): void
     {
         $admin = User::factory()->admin()->create([
@@ -33,6 +38,22 @@ class UserTableSeeder extends Seeder
         $this->command->info('---*** Admin Created SuccessFully');
     }
 
+    /**
+     * create Writer
+     */
+    private function createWriter(): void
+    {
+        $admin = User::factory()->writer()->create([
+            User::col_email => 'writer@a.b',
+            User::col_password => Hash::make('1234')
+        ]);
+
+        $this->command->info('---*** Writer Created SuccessFully');
+    }
+
+    /**
+     * create Normall User
+     */
     private function createNormallUser(): void
     {
         $user = User::factory()->user()->create([
