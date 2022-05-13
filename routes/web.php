@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    //return view('welcome');
+    return view('welcome');
 
   $post =  \App\Models\Post::query()->where('id',1)->firstOrFail();
 
@@ -31,3 +31,11 @@ Route::get('/', function () {
 
 
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
