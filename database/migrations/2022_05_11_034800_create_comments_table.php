@@ -14,8 +14,8 @@ class CreateCommentsTable extends Migration
     public function up()
     {
         Schema::create('comments', function (Blueprint $table) {
-            $table->id();
 
+            $table->id();
 
             $table->foreignId('user_id')
                 ->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
@@ -24,11 +24,11 @@ class CreateCommentsTable extends Migration
                 ->constrained('posts')->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->foreignId('reply_id')
+                ->nullable()
                 ->constrained('comments')->references('id')
                 ->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->boolean('show');
-
             $table->string('text');
             $table->timestamps();
         });

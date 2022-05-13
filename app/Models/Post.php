@@ -25,7 +25,7 @@ class Post extends Model
     const col_cover = 'cover';
 
     protected $fillable = [
-        self::col_writer_id,
+        self::col_writer_id,//user_id fk
         self::col_title,
         self::col_slug,
         self::col_body,
@@ -45,5 +45,15 @@ class Post extends Model
     public function writer()
     {
         return $this->belongsTo(User::class, self::col_writer_id, User::col_id);
+    }
+
+    /**
+     * Has Many with Comments table
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'post_id', 'id');
     }
 }

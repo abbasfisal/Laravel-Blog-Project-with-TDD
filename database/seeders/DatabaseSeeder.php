@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
         $this->createCategory();
         $this->createTag();
 
+        $this->call(CommentSeeder::class);
+
         Schema::enableForeignKeyConstraints();
     }
 
