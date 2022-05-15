@@ -28,7 +28,16 @@ Route::get('/logout', [AutheticateController::class, 'logout'])
  | admin routes
  |------------------------------
  */
-Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'can:admin']], function () {
 
     Route::get('/dashboard', [AdminController::class, 'showDashboard'])->name('dashboard.admin');
+
+
+    Route::get('/writer/new', [AdminController::class, 'newWriterForm'])
+        ->name('new.writer.admin');
+
+    Route::post('/writer/store', [AdminController::class, 'storeWriter'])
+        ->name('store.writer.admin');
+
 });
+

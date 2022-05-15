@@ -56,4 +56,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    /*
+     |------------------------------
+     | Methods
+     |------------------------------
+     |
+     |
+     |
+     */
+
+    public function isAdmin()
+    {
+        return $this->type === User::type_admin;
+    }
 }
