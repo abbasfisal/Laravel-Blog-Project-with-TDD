@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\createCategoryRequest;
 use App\Http\Requests\CreateWriterRequest;
 use App\Http\Requests\ListWriterRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -90,6 +91,12 @@ class AdminController extends Controller
         return view('admin.category.create');
     }
 
+    /**
+     * Save a new Category
+     *
+     * @param createCategoryRequest $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function storeNewCategory(createCategoryRequest $request)
     {
         $slug = SLUG($request->title);
@@ -103,5 +110,33 @@ class AdminController extends Controller
         return redirect(route('new.category.admin'))
             ->with('success', 'new Category Created SuccessFully');
 
+    }
+
+
+    /**
+     * show categires by paginate
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function showCategoryList()
+    {
+        $categories = Category::query()
+                              ->paginate(3);
+
+        return view('admin.category.list', compact('categories'));
+    }
+
+    public function editCategory(Category $category)
+    {
+        return view('admin.category.edit', compact('category'));
+    }
+
+    public function updateCategory(UpdateCategoryRequest $request, Category $category)
+    {
+        $category->update([
+            Category::col_title => $request->title,
+            Category::col_slug  => SLUG($request->title)
+        ]);
+
+        return redirect(route('list.category.admin'))->with('success','category updated successfully');
     }
 }

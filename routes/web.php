@@ -67,5 +67,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'can:admin']], funct
          ->name('new.category.admin');
     Route::post('/category/store', [AdminController::class, 'storeNewCategory'])
          ->name('store.category.admin');
+
+    Route::get('/category/list', [AdminController::class, 'showCategoryList'])
+         ->name('list.category.admin');
+
+    Route::get('/category/edit/{category}', [AdminController::class, 'editCategory'])
+         ->name('edit.category.admin');
+
+    Route::put('/category/update/{category}', [AdminController::class, 'updateCategory'])
+         ->name('update.category.admin');
 });
 

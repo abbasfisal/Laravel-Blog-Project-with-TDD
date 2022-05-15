@@ -27,7 +27,7 @@ class CategoryTest extends TestCase
     }
 
     /**
-     * check route existence
+     * check route new category existence
      */
     public function test_create_new_category_route_exist()
     {
@@ -100,9 +100,69 @@ class CategoryTest extends TestCase
                                        ->count());
 
         $res->assertRedirect(route('new.category.admin'))
-            ->assertSessionHas('success' ,'new Category Created SuccessFully');
+            ->assertSessionHas('success', 'new Category Created SuccessFully');
 
     }
+
+    /**
+     * show all categories
+     */
+    public function test_show_all_categories()
+    {
+        $this->makeAdminlogin();
+
+
+        $resp = $this->get(route('list.category.admin'));
+        $resp->assertViewIs('admin.category.list');
+        $resp->assertViewHas('categories');
+
+
+    }
+
+
+    /**
+     * pass a category to a form for editing
+     */
+    public function test_edit_category()
+    {
+        $this->withoutExceptionHandling();
+        $this->makeAdminlogin();
+
+        $cat = Category::factory()
+                       ->create();
+
+        $res = $this->get(route('edit.category.admin', $cat->id));
+
+        $res->assertViewIs('admin.category.edit');
+
+        $res->assertViewHas('category');
+
+    }
+
+
+    /**
+     * update a category
+     */
+    public function test_update_a_category()
+    {
+        $this->makeAdminlogin();
+
+        $category = Category::factory()
+                            ->create();
+
+        $data = ['title' => 'updated'];
+
+        $res = $this->put(route('update.category.admin', $category->id), $data);
+
+        $this->assertDatabaseHas('categories', [
+            'title' => 'updated',
+            'slug'  => SLUG('updated')
+        ]);
+
+        $res->assertRedirect(route('list.category.admin'))
+            ->assertSessionHas('success' ,'category updated successfully');
+    }
+
 
     /*
      |------------------------------

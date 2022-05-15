@@ -11,6 +11,7 @@
                 <br>
                 <br>
                 <a href="{{route('new.category.admin')}}" class="btn btn-info">Create New Category</a>
+                <a href="{{route('list.category.admin')}}" class="btn btn-info">Category Lists</a>
             </div>
         </div>
     </div>
