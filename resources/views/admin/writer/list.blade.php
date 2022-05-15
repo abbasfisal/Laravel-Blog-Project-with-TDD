@@ -22,7 +22,7 @@
                         <td>{{$writer->email}}</td>
                         <td class="text-center">
                             <a href="#" class="btn btn-info">Edit</a>
-                            <a href="#" class="btn btn-info">show Posts</a>
+                            <a href="{{route('posts.writer.admin',$writer->id)}}" class="btn btn-info">show Posts</a>
                         </td>
                     </tr>
                     @php($i++)

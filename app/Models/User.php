@@ -71,4 +71,17 @@ class User extends Authenticatable
     {
         return $this->type === User::type_admin;
     }
+
+    /*
+     |------------------------------
+     | Relations
+     |------------------------------
+     |
+     */
+    public function posts()
+    {
+        return $this->hasMany(Post::class, Post::col_writer_id, self::col_id);
+    }
 }
+
+

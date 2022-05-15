@@ -19,7 +19,9 @@ class WriterTest extends TestCase
      */
     public function test_admin_can_see_create_writer_form()
     {
-        $admin = User::factory()->admin()->create();
+        $admin = User::factory()
+                     ->admin()
+                     ->create();
 
         $this->actingAs($admin);
 
@@ -49,7 +51,7 @@ class WriterTest extends TestCase
         $this->makeAdmin();
 
         $this->post(route('store.writer.admin'))
-            ->assertSessionHasErrors(['name', 'email', 'password']);
+             ->assertSessionHasErrors(['name', 'email', 'password']);
     }
 
     /**
@@ -83,14 +85,41 @@ class WriterTest extends TestCase
     public function test_writer_list()
     {
         $this->makeAdmin();
-        $writers =User::factory()->count(4)->writer()->create();
+        $writers = User::factory()
+                       ->count(4)
+                       ->writer()
+                       ->create();
 
-        $resp =$this->get(route('list.writer.admin'));
+        $resp = $this->get(route('list.writer.admin'));
 
         $resp->assertViewIs('admin.writer.list');
 
         $resp->assertViewHas('writers',
-            User::where('type','writer')->paginate(2) );
+            User::where('type', 'writer')
+                ->paginate(2));
+    }
+
+
+    public function test_show_writer_posts()
+    {
+        $this->makeAdmin();
+
+        //create writer with its posts
+        $writer = User::factory()
+                      ->writer()
+                      ->hasPosts(3)
+                      ->create();
+
+        //send get request
+        $resp = $this->get(route('posts.writer.admin', $writer));
+
+        //assert view name
+        $resp->assertViewIs('admin.writer.writerpostlists');
+
+        //assert data in view
+        $resp->assertViewHas('writer',$writer);
+
+
     }
 
     /**
@@ -99,7 +128,9 @@ class WriterTest extends TestCase
     private function makeUser(): void
     {
         //normall user
-        $user = User::factory()->user()->create();
+        $user = User::factory()
+                    ->user()
+                    ->create();
         //login
         $this->actingAs($user);
     }
@@ -110,7 +141,9 @@ class WriterTest extends TestCase
     private function makeAdmin(): void
     {
         // admin user
-        $user = User::factory()->admin()->create();
+        $user = User::factory()
+                    ->admin()
+                    ->create();
         //login
         $this->actingAs($user);
     }

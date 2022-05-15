@@ -49,4 +49,14 @@ class AdminController extends Controller
         return view('admin.writer.list', compact('writers'));
 
     }
+
+    /**
+     * show wirter posts
+     *
+     */
+    public function showWriterPosts(User $user)
+    {
+        $writer = $user;
+        return view('admin.writer.writerpostlists' , compact('writer'));
+    }
 }

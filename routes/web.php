@@ -41,5 +41,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'can:admin']], funct
 
     Route::get('/writer/list', [AdminController::class, 'showWriterList'])
         ->name('list.writer.admin');
+
+    Route::get('/writer/posts/{user}', [AdminController::class, 'showWriterPosts'])
+        ->name('posts.writer.admin');
 });
 
