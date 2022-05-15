@@ -39,5 +39,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'can:admin']], funct
     Route::post('/writer/store', [AdminController::class, 'storeWriter'])
         ->name('store.writer.admin');
 
+    Route::get('/writer/list', [AdminController::class, 'showWriterList'])
+        ->name('list.writer.admin');
 });
 

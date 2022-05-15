@@ -80,6 +80,19 @@ class WriterTest extends TestCase
 
     }
 
+    public function test_writer_list()
+    {
+        $this->makeAdmin();
+        $writers =User::factory()->count(4)->writer()->create();
+
+        $resp =$this->get(route('list.writer.admin'));
+
+        $resp->assertViewIs('admin.writer.list');
+
+        $resp->assertViewHas('writers',
+            User::where('type','writer')->paginate(2) );
+    }
+
     /**
      * لاگین یک یوزر ساده
      */
