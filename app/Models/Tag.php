@@ -14,6 +14,7 @@ class Tag extends Model
     /**
      * define tables columns
      */
+    const col_id = 'id';
     const col_title = 'title';
     const col_slug = 'slug';
 
@@ -24,4 +25,18 @@ class Tag extends Model
         self::col_title,
         self::col_slug
     ];
+
+
+    /*
+     |------------------------------
+     | Relations
+     |------------------------------
+     |
+     |
+     |
+     */
+    public function posts()
+    {
+        return $this->belongsToMany(Post::class, 'post_tag');
+    }
 }

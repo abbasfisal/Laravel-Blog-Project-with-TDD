@@ -31,8 +31,8 @@ class AutheticateController extends Controller
                     return redirect(route('dashboard.admin'));
 
                 case User::type_writer:
-                    //TODO وقتی نوبت نویسنده شد درست کن ریدایرکت رو
-                    return 'writer loged in success';
+
+                    return redirect(route('dashboard.writer'));
 
                 case User::type_user:
                     //TODO درست کن وقتی نوبت یوزر عادی شد

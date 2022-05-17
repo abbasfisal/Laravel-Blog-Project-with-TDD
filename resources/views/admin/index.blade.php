@@ -6,7 +6,7 @@
 
             <h5>admin dashbord</h5>
 
-            <div class="col-lg-5 m-auto border">
+            <div class="col-lg-5 m-auto">
                 <a href="{{route('new.writer.admin')}}" class="btn btn-info">Create New Writer</a>
                 <br>
                 <br>

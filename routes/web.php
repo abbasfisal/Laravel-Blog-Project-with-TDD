@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\AutheticateController;
+use App\Http\Controllers\Writer\WriterController;
 use Illuminate\Support\Facades\Route;
+use UniSharp\LaravelFilemanager\Lfm;
 
 
 Route::get('/', function () {
@@ -21,7 +23,7 @@ Route::get('/login', [AutheticateController::class, 'showLoginForm'])
 Route::post('/login', [AutheticateController::class, 'login'])
      ->name('login');
 
-Route::get('/logout', [AutheticateController::class, 'logout'])
+Route::post('/logout', [AutheticateController::class, 'logout'])
      ->name('logout')
      ->middleware('auth');
 
@@ -32,6 +34,7 @@ Route::get('/logout', [AutheticateController::class, 'logout'])
  */
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'can:admin']], function () {
 
+    //Dashboard
     Route::get('/dashboard', [AdminController::class, 'showDashboard'])
          ->name('dashboard.admin');
 
@@ -78,3 +81,39 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'can:admin']], funct
          ->name('update.category.admin');
 });
 
+/*
+ |------------------------------
+ |  Writer Routes
+ |------------------------------
+ */
+Route::group(['prefix' => 'writer', 'middleware' => ['auth']], function () {
+
+    //Dashboard
+    Route::get('/dashboard', [WriterController::class, 'showDashboard'])
+         ->name('dashboard.writer');
+
+    /*
+     |------------------------------
+     | for post //TODO set a gate for post
+     |------------------------------
+     */
+    Route::get('/post/new', [WriterController::class, 'newPost'])
+         ->name('new.post.writer');
+
+    Route::post('/post/store', [WriterController::class, 'storePost'])
+         ->name('store.post.writer');
+});
+
+
+/*
+ |------------------------------
+ | Laravel File Manager LMF
+ |------------------------------
+ |
+ |
+ |
+ */
+//TODO add middleware can:admin,writer
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+    Lfm::routes();
+});

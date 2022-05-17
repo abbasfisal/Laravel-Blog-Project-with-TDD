@@ -9,18 +9,19 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $table='categories';
+    protected $table = 'categories';
 
     /**
      * define tables columns
      */
-    const col_title='title';
-    const col_slug='slug';
+    const col_id = 'id';
+    const col_title = 'title';
+    const col_slug = 'slug';
 
     //-------------------------
 
 
-    protected $fillable =[
+    protected $fillable = [
         self::col_title,
         self::col_slug
     ];
