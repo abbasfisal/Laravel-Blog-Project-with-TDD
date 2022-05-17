@@ -4,6 +4,7 @@ namespace Tests\Feature\Writer;
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -13,6 +14,9 @@ class PostTest extends TestCase
     use DatabaseMigrations;
     use RefreshDatabase;
 
+    /**
+     * post require validation
+     */
     public function test_post_validation_for_test()
     {
         $this->makeWriterLogin();
@@ -20,6 +24,9 @@ class PostTest extends TestCase
         $res->assertSessionHasErrors('title');
     }
 
+    /**
+     * post slug must be unique
+     */
     public function test_post_slug_must_be_unique_validation()
     {
         $this->makeWriterLogin();
@@ -47,6 +54,9 @@ class PostTest extends TestCase
 
     }
 
+    /**
+     * create new post
+     */
     public function test_create_new_post()
     {
         //writer login
@@ -80,7 +90,30 @@ class PostTest extends TestCase
                                                 ->count());
     }
 
+    public function test_writer_posts_list()
+    {
 
+        $writer = $this->makeWriterLogin();
+
+        $posts = Post::factory($writer)->create();
+
+        $res = $this->get(route('list.post.writer'));
+
+        $res->assertViewIs('writer.list');
+
+        $res->assertViewHas('posts');
+    }
+
+    /*public function test_edit()
+    {
+        //route
+        //gate writer
+        //select post
+        //check view
+        //check data in view
+        //update data in db
+        //check data update
+    }*/
     /*
      |------------------------------
      | private methods
@@ -95,9 +128,9 @@ class PostTest extends TestCase
      */
     public function makeWriterLogin()
     {
-        $writer = \App\Models\User::factory()
-                                  ->writer()
-                                  ->create();
+        $writer = User::factory()
+                      ->writer()
+                      ->create();
 
         $this->actingAs($writer);
         return $writer;

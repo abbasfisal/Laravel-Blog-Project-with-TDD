@@ -70,15 +70,14 @@ class WriterController extends Controller
                         ]);
 
 
-
             $post->categories()
                  ->saveMany($cat_ids);
 
 
             $post->tags()
-                ->saveMany($tag_ids);
+                 ->saveMany($tag_ids);
 
-             DB::commit();
+            DB::commit();
 
 
         } catch (\Exception $e) {
@@ -89,4 +88,15 @@ class WriterController extends Controller
         }
 
     }
+
+    public function showPostsList()
+    {
+
+         $posts = Post::query()
+                            ->where(Post::col_writer_id, Auth::id())
+                            ->paginate(5);
+
+        return view('writer.list' ,compact('posts'));
+    }
 }
+

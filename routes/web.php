@@ -102,6 +102,13 @@ Route::group(['prefix' => 'writer', 'middleware' => ['auth']], function () {
 
     Route::post('/post/store', [WriterController::class, 'storePost'])
          ->name('store.post.writer');
+
+    Route::get('/post/list', [WriterController::class, 'showPostsList'])
+         ->name('list.post.writer');
+
+    //edit
+    //delete
+
 });
 
 
