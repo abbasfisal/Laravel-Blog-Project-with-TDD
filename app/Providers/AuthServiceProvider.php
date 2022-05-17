@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Post;
+use App\Policies\WriterPostPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -14,6 +16,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
+        Post::class => WriterPostPolicy::class
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
     ];
 
@@ -28,8 +31,10 @@ class AuthServiceProvider extends ServiceProvider
 
 
         Gate::define('admin', function () {
-            return Auth::user()->isAdmin();
+            return Auth::user()
+                       ->isAdmin();
         });
+
 
         //
     }

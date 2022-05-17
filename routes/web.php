@@ -5,6 +5,7 @@ use App\Http\Controllers\AutheticateController;
 use App\Http\Controllers\Writer\WriterController;
 use Illuminate\Support\Facades\Route;
 use UniSharp\LaravelFilemanager\Lfm;
+use const App\Models\Post;
 
 
 Route::get('/', function () {
@@ -94,7 +95,7 @@ Route::group(['prefix' => 'writer', 'middleware' => ['auth']], function () {
 
     /*
      |------------------------------
-     | for post //TODO set a gate for post
+     | for post
      |------------------------------
      */
     Route::get('/post/new', [WriterController::class, 'newPost'])
@@ -107,7 +108,12 @@ Route::group(['prefix' => 'writer', 'middleware' => ['auth']], function () {
          ->name('list.post.writer');
 
     //edit
+    Route::get('/post/edit/{post}', [WriterController::class, 'editWriterPost'])
+         ->name('edit.post.writer');
     //delete
+
+    Route::put('/post/update/{post}', [WriterController::class, 'updateWriterPost'])
+         ->name('update.post.writer');
 
 });
 
@@ -124,3 +130,5 @@ Route::group(['prefix' => 'writer', 'middleware' => ['auth']], function () {
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
     Lfm::routes();
 });
+
+

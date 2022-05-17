@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class PostTest extends TestCase
@@ -95,7 +96,8 @@ class PostTest extends TestCase
 
         $writer = $this->makeWriterLogin();
 
-        $posts = Post::factory($writer)->create();
+        $posts = Post::factory($writer)
+                     ->create();
 
         $res = $this->get(route('list.post.writer'));
 
@@ -104,16 +106,38 @@ class PostTest extends TestCase
         $res->assertViewHas('posts');
     }
 
-    /*public function test_edit()
+    public function test_select_a_post_foredit()
     {
-        //route
-        //gate writer
-        //select post
-        //check view
-        //check data in view
-        //update data in db
-        //check data update
-    }*/
+        $this->withoutExceptionHandling();
+        $writer = $this->makeWriterLogin();
+
+        //create post
+        $post = Post::factory()
+                    ->create(['writer_id' =>$writer->id]);
+
+
+        $categories = Category::factory()
+                              ->count(5)
+                              ->create();
+
+        $res = $this->get(route('edit.post.writer', $post->id));
+
+        $res->assertViewIs('writer.editpost');
+        $res->assertViewHas('post');
+        $res->assertViewHas('categories');
+    }
+
+    public function test_only_owner_of_post_can_edit()
+    {
+        $writer = $this->makeWriterLogin();
+
+        //create psot
+        $post = Post::factory()
+                    ->create();
+
+        $res = $this->get(route('edit.post.writer', $post->id));
+        $res->assertForbidden();
+    }
     /*
      |------------------------------
      | private methods

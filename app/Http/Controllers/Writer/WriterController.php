@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Writer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\Writer\EditPostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
@@ -89,14 +90,36 @@ class WriterController extends Controller
 
     }
 
+    /**
+     * show all logedIn writer posts
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function showPostsList()
     {
+        //TODO : complete me=> writer can see just its posts
+        $posts = Post::query()
+                     ->where(Post::col_writer_id, Auth::id())
+                     ->paginate(5);
 
-         $posts = Post::query()
-                            ->where(Post::col_writer_id, Auth::id())
-                            ->paginate(5);
+        return view('writer.list', compact('posts'));
+    }
 
-        return view('writer.list' ,compact('posts'));
+    public function editWriterPost(EditPostRequest $request, Post $post)
+    {
+        $categories = Category::all();
+        //TODO create request(policy) writer just can edit its posts
+        return view('writer.editpost', compact('post', 'categories'));
+    }
+
+    /**
+     * update a post
+     */
+    public function updateWriterPost(Post $post)
+    {
+        //write test for gate post
+
+        dd('h');
     }
 }
 
