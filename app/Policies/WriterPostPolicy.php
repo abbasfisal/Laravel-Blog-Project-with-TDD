@@ -68,7 +68,8 @@ class WriterPostPolicy
      */
     public function delete(User $user, Post $post)
     {
-        //
+
+        return $user->id == $post->writer_id;
     }
 
     /**

@@ -109,11 +109,14 @@ Route::group(['prefix' => 'writer', 'middleware' => ['auth']], function () {
     //edit
     Route::get('/post/edit/{post}', [WriterController::class, 'editWriterPost'])
          ->name('edit.post.writer');
-    //delete
 
+    //update
     Route::put('/post/update/{post}', [WriterController::class, 'updateWriterPost'])
          ->name('update.post.writer');
 
+    //delete
+    Route::delete('/post/delete/{post}', [WriterController::class, 'deletePost'])
+         ->name('delete.post.writer');
 });
 
 

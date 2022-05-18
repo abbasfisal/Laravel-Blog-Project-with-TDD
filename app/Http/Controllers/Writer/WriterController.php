@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Writer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\DeletePostRequest;
 use App\Http\Requests\UpdateWriterPostRequest;
 use App\Http\Requests\Writer\EditPostRequest;
 use App\Models\Category;
@@ -129,7 +130,8 @@ class WriterController extends Controller
             $cat_id_sync = [];
 
             //sync post_category table
-            $post->categories()->sync($request->categories);
+            $post->categories()
+                 ->sync($request->categories);
 
             //ذخیره آی دی تگ ها و در نهایت سینک کردن آی دی های موجود در این آرایه
             $tag_ids = [];
@@ -179,6 +181,29 @@ class WriterController extends Controller
         }
 
 
+    }
+
+    public function deletePost(DeletePostRequest $request, Post $post)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $post->tags()
+                 ->detach();
+
+            $post->categories()
+                 ->detach();
+
+            $post->delete();
+
+            DB::commit();
+            return redirect(route('list.post.writer'))->with('delete-succ', 'Post Deleted SuccessFully');
+        } catch (\Exception $e) {
+            Log::error($e);
+            dd($e);
+            DB::rollBack();
+        }
     }
 }
 

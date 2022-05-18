@@ -187,6 +187,9 @@ class PostTest extends TestCase
 
     }
 
+    /**
+     * update a post
+     */
     public function test_updae_a_post_by_owner()
     {
 
@@ -246,6 +249,36 @@ class PostTest extends TestCase
         //check success session message
         $res->assertSessionHas('update-succ', 'post Updated Successfully');
     }
+
+    /**
+     * delete a post
+     */
+    public function test_delete_a_post()
+    {
+        $this->withoutExceptionHandling();
+
+        $writer = $this->makeWriterLogin();
+        $post = Post::factory()
+                    ->state(['writer_id' => $writer->id])
+                    ->hasCategories(3)
+                    ->hasTags(3)
+                    ->create();
+
+        $cat_id = $post->categories[0]->category_id;
+        $tag_id = $post->tags[0]->tag_id;
+
+
+        $res = $this->delete(route('delete.post.writer', $post->id));
+
+        $this->assertDatabaseMissing('posts', ['id' => $post->id]);
+        $this->assertDatabaseMissing('post_tag', ['tag_id' => $tag_id]);
+        $this->assertDatabaseMissing('post_category', ['category_id' => $cat_id]);
+
+        $res->assertRedirect(route('list.post.writer'));
+
+        $res->assertSessionHas('delete-succ', 'Post Deleted SuccessFully');
+    }
+
     /*
      |------------------------------
      | private methods

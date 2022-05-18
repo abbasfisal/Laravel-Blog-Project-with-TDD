@@ -15,6 +15,12 @@
                     <b>{{session('update-succ')}}</b>
                 </div>
             @endif
+
+            @if(!empty(session('delete-succ')))
+                <div class="alert alert-warning">
+                    <b>{{session('delete-succ')}}</b>
+                </div>
+            @endif
             <table class="table table-light table-hover">
                 <thead>
                 <tr>
@@ -33,7 +39,13 @@
                         <td>{{$post->slug}}</td>
                         <td class="text-center">
                             <a href="{{route('edit.post.writer',$post->id)}}" class="btn btn-info">edit</a>
-                            <a href="#" class="btn btn-info">delete</a>
+
+                            <form method="post" action="{{route('delete.post.writer',$post->id)}}">
+                                @method('delete')
+                                @csrf
+                                <button type="submit" class="btn btn-info">delete</button>
+
+                            </form>
                         </td>
 
                     </tr>
