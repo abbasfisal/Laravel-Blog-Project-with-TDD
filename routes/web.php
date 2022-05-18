@@ -5,7 +5,6 @@ use App\Http\Controllers\AutheticateController;
 use App\Http\Controllers\Writer\WriterController;
 use Illuminate\Support\Facades\Route;
 use UniSharp\LaravelFilemanager\Lfm;
-use const App\Models\Post;
 
 
 Route::get('/', function () {
@@ -130,5 +129,3 @@ Route::group(['prefix' => 'writer', 'middleware' => ['auth']], function () {
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
     Lfm::routes();
 });
-
-

@@ -53,7 +53,7 @@
                 <div class="form-group col-lg-9 m-auto">
                     <label for="slug">Slug</label>
                     <input type="text"
-                           value="{{old('slug')??$post->slug}}this-is-my-first-title-writing"
+                           value="{{old('slug')??$post->slug}}"
                            class="form-control @error('slug') is-invalid @enderror"
                            id="slug"
                            name="slug"
@@ -110,8 +110,10 @@
                 <br>
                 <div class="form-group col-lg-9 m-auto">
                     <label for="categories">categories</label>
-                    <select class="js-example-basic-multiple-cat @error("categories") is-invalid @enderror form-control"
-                            name="categories[]" multiple="multiple">
+                    <select
+                        id="categories"
+                        class="js-example-basic-multiple-cat @error("categories") is-invalid @enderror form-control"
+                        name="categories[]" multiple="multiple">
 
                         @php($cat_arr=[])
                         @foreach($post->categories as $pCat)
@@ -153,6 +155,7 @@
                      <strong>{{ $message }}</strong>
                     </span>
                     @enderror
+                    <br>
                     <br>
                     <button type="submit" class="btn btn-info">Update Post</button>
                 </div>

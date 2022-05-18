@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Writer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\UpdateWriterPostRequest;
 use App\Http\Requests\Writer\EditPostRequest;
 use App\Models\Category;
 use App\Models\Post;
@@ -11,6 +12,7 @@ use App\Models\Tag;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use PHPUnit\Exception;
 
 class WriterController extends Controller
 {
@@ -115,11 +117,68 @@ class WriterController extends Controller
     /**
      * update a post
      */
-    public function updateWriterPost(Post $post)
+    public function updateWriterPost(UpdateWriterPostRequest $request, Post $post)
     {
-        //write test for gate post
 
-        dd('h');
+        try {
+            DB::beginTransaction();
+
+            //update post
+            $post->update($request->only(['title', 'slug', 'cover', 'body']));
+
+            $cat_id_sync = [];
+
+            //sync post_category table
+            $post->categories()->sync($request->categories);
+
+            //ذخیره آی دی تگ ها و در نهایت سینک کردن آی دی های موجود در این آرایه
+            $tag_ids = [];
+
+            //برای تگ ابتدا چک میکنیم که تگ ها در جدل تگ وجود داره یا نه
+            //اگه وجود نداشت یک تگ جدید در جدول تگ ایجاد میشه
+            //اگه وجود داشت فقط id اون تگ رو از جدول تگ رو در ارایه ذخیره میکنیم
+            foreach ($request->tags as $tag) {
+
+                //check tag existence in tags table
+                $is_tag_exist = Tag::query()
+                                   ->where('title', $tag)
+                                   ->orWhere('slug', SLUG($request->slug))
+                                   ->get();
+                //tag not exist
+                if ($is_tag_exist->count() === 0) {
+                    //create new tag
+                    $tag_id = Tag::query()
+                                 ->create([
+                                     Tag::col_title => $tag,
+                                     Tag::col_slug  => SLUG($tag)
+                                 ]);
+
+                    //ذخیره آی دی تگ جدید ذخیره شده در جدول تگ به صورت کی ولیو
+                    $tag_ids[$tag_id->id] = $tag_id->id;
+
+                } else {
+                    //tag was exist in tags table
+
+                    //ذخیره آی دی تگ موجود در جدول تگ به صورت کی ولیو
+                    $tag_ids[$is_tag_exist[0]['id']] = $is_tag_exist[0]['id'];
+
+                }
+            }
+
+            //syn post_tag table
+            $post->tags()
+                 ->sync($tag_ids);
+
+            DB::commit();
+            return redirect(route('list.post.writer'))->with('update-succ', 'post Updated Successfully');
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error($e);
+            return redirect(route('list.post.writer'))->with('update-fail', 'Oops,we can not update the post,try a gain later');
+        }
+
+
     }
 }
 

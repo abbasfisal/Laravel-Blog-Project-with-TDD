@@ -4,10 +4,10 @@ namespace Tests\Feature\Writer;
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class PostTest extends TestCase
@@ -113,7 +113,7 @@ class PostTest extends TestCase
 
         //create post
         $post = Post::factory()
-                    ->create(['writer_id' =>$writer->id]);
+                    ->create(['writer_id' => $writer->id]);
 
 
         $categories = Category::factory()
@@ -137,6 +137,114 @@ class PostTest extends TestCase
 
         $res = $this->get(route('edit.post.writer', $post->id));
         $res->assertForbidden();
+    }
+
+
+    public function test_none_owner_post_not_allowed_for_update()
+    {
+
+        $writer = $this->makeWriterLogin();
+
+        $owner = User::factory()
+                     ->writer()
+                     ->create();
+
+        $post = Post::factory(['writer_id' => $owner->id])
+                    ->create();
+
+        $res = $this->put(route('update.post.writer', $post->id), ['title' => 'updated title']);
+
+        $res->assertForbidden();
+    }
+
+    /**
+     * slug unique and require validation when updating
+     */
+    public function test_unique_slug_and_required_validation_for_updating_a_post_by_owner()
+    {
+        $writer = $this->makeWriterLogin();
+
+        //post
+        $post = Post::factory()
+                    ->state(['writer_id' => $writer->id])
+                    ->hasCategories(3)
+                    ->hasTags(3)
+                    ->create();
+
+        //another post
+        $post_2 = Post::factory()
+                      ->create();
+
+
+        //request
+        $data = ['slug' => $post_2->slug];
+
+        $res = $this->put(route('update.post.writer', $post->id), $data);
+
+        $res->assertSessionHasErrors('title');//مابقی فیلد ها رو ولیدیشن میکنه و خطا میده اما من فقط تایتیل رو گذاشتم
+        $res->assertSessionHasErrors('slug'); //اسلاگ، چون از اسلاگ post_2 استفاده کرده لذا خطای عدم یونیک بودن میده
+
+
+    }
+
+    public function test_updae_a_post_by_owner()
+    {
+
+        $writer = $this->makeWriterLogin();
+
+        //create 10 categories
+        $cats = Category::factory(10)
+                        ->create();
+
+        //create 2 tag
+        Tag::create(['slug' => 'bussiness', 'title' => 'bussiness']);
+        Tag::create(['slug' => 'laptop', 'title' => 'laptop']);
+
+        //create a post with categories(3) and tags(3)
+        $post = Post::factory()
+                    ->state(['writer_id' => $writer->id])
+                    ->hasTags(3)
+                    ->hasCategories(3)
+                    ->create();
+
+        $old_cat_id = $post->categories[0]->id;//چون رابطه چند به چند است خواستیم از قبل هم کتگوری باشه تا دستوری sync رو کامل چک کنیم
+
+        $data = [
+            'title'      => 'updated title',
+            'slug'       => 'updated-title',
+            'cover'      => $post->cover,
+            'body'       => $post->body,
+            'categories' => [
+                0 => $old_cat_id,
+                1 => 3, //new category
+                2 => 4, //new category
+                3 => 5  //new category
+            ],
+            'tags'       => [
+                2 => $post->tags[2]->slug,//old tag
+                0 => 'laptop',      //aleary exist in tags table
+                1 => 'bussiness',   //already exist in tags table
+                3 => 'test-tag'     //new tag (first must be save in tags table then save in pivot table)
+            ]
+        ];
+
+        //send request for update
+        $res = $this->put(route('update.post.writer', $post->id), $data);
+
+        //check posts table update
+        $this->assertDatabaseHas('posts', ['id' => $post->id, 'slug' => 'updated-title']);
+
+        //check synced category in post_category table
+        $this->assertDatabaseHas('post_category', ['post_id' => $post->id, 'category_id' => 3]);
+        $this->assertDatabaseHas('post_category', ['post_id' => $post->id, 'category_id' => 4]);
+        $this->assertDatabaseHas('post_category', ['post_id' => $post->id, 'category_id' => 5]);
+        $this->assertDatabaseHas('post_category', ['post_id' => $post->id, 'category_id' => $old_cat_id]);
+
+        //check synced tags in post_tag table
+        $this->assertDatabaseCount('post_tag', 4);
+
+        //check success session message
+        $res->assertSessionHas('update-succ', 'post Updated Successfully');
     }
     /*
      |------------------------------
