@@ -18,11 +18,11 @@ class CommentFactory extends Factory
     {
         return [
 
-            Comment::col_user_id => 3,
-            /*Comment::col_post_id => Post::factory(),*/
+            Comment::col_user_id => User::factory()->user(),
+            Comment::col_post_id => Post::factory(),
             Comment::col_reply_id => null,
             Comment::col_show => true,
-            Comment::col_text => $this->faker->text,
+            Comment::col_text => $this->faker->text(100),
         ];
     }
 

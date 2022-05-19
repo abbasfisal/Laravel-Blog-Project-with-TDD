@@ -150,3 +150,10 @@ Route::group([], function () {
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
     Lfm::routes();
 });
+
+Route::get('/as' ,function (){
+    //writer_id = 42
+    //post id = 53
+   $p = \App\Models\Post::factory()->state(['id'=>43])->hasComments(3)->create();
+   dd(\App\Models\Post::with('comments')->where('id',53)->get()->toArray());
+});

@@ -39,9 +39,21 @@
             @endforeach
         </div>
         <br>
+        {{--show comments--}}
         <div class="col-lg-10 border rounded-4 m-auto">
             <h5>Comments</h5>
-            {{dd($post->comments)}}
+            @if(!empty($post->comments))
+                @foreach($post->comments as $comment)
+                <div class="col-lg-8 border m-auto mt-4 rounded-2">
+                    <span class="badge bg-info">
+                        {{$comment->user->name}}
+                    </span>
+                    <b>
+                        {{$comment->text}}
+                    </b>
+                </div>
+                @endforeach
+            @endif
         </div>
 
     </div>
