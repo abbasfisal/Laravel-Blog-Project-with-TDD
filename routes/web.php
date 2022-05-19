@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\AutheticateController;
+use App\Http\Controllers\Guest\PostController;
 use App\Http\Controllers\Writer\WriterController;
 use Illuminate\Support\Facades\Route;
 use UniSharp\LaravelFilemanager\Lfm;
@@ -117,6 +118,23 @@ Route::group(['prefix' => 'writer', 'middleware' => ['auth']], function () {
     //delete
     Route::delete('/post/delete/{post}', [WriterController::class, 'deletePost'])
          ->name('delete.post.writer');
+});
+
+/*
+ |------------------------------
+ | Guest Routes
+ |------------------------------
+ |
+ |
+ |
+ */
+Route::group([], function () {
+
+    Route::get('/', [PostController::class , 'index'])
+         ->name('index.guest');
+
+    Route::get('/{post}/{slug}' , [PostController::class , 'showSinglePost'])
+        ->name('single.post.guest');
 });
 
 
