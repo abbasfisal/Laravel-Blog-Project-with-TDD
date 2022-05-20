@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Writer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Requests\DeletePostRequest;
+use App\Http\Requests\ShowCommentsPostRequest;
 use App\Http\Requests\UpdateWriterPostRequest;
 use App\Http\Requests\Writer\EditPostRequest;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Support\Facades\Auth;
@@ -201,9 +203,28 @@ class WriterController extends Controller
             return redirect(route('list.post.writer'))->with('delete-succ', 'Post Deleted SuccessFully');
         } catch (\Exception $e) {
             Log::error($e);
-            dd($e);
+
             DB::rollBack();
         }
+    }
+
+    public function showPostComments(ShowCommentsPostRequest $request, Post $post)
+    {
+        $post = Post::with('comments.user')
+                    ->where('id', $post->id)
+                    ->get()
+                    ->toArray();
+        return view('writer.commentlist', compact('post'));
+    }
+
+
+    public function changeStateComment(Comment $comment)
+    {
+
+        $comment->update([
+            Comment::col_show => $comment->show ? false : true
+        ]);
+        return redirect()->back()->with('state' , 'comment show state changed' );
     }
 }
 

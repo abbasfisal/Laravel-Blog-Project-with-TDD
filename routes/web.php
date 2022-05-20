@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\AutheticateController;
 use App\Http\Controllers\Guest\PostController;
+use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Writer\WriterController;
 use Illuminate\Support\Facades\Route;
 use UniSharp\LaravelFilemanager\Lfm;
@@ -118,7 +119,37 @@ Route::group(['prefix' => 'writer', 'middleware' => ['auth']], function () {
     //delete
     Route::delete('/post/delete/{post}', [WriterController::class, 'deletePost'])
          ->name('delete.post.writer');
+
+    /*
+     |------------------------------
+     | for comments
+     |------------------------------
+     |
+     */
+    Route::get('/post/comments/{post}', [WriterController::class, 'showPostComments'])
+         ->name('comment.post.writer');
+
+        Route::get('/post/{comment}', [WriterController::class, 'changeStateComment'])
+             ->name('state.comments.writer');
+
+
 });
+
+/*
+ |------------------------------
+ | User Routes
+ |------------------------------
+ |
+ |
+ |
+ */
+
+Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
+
+    Route::post('/comment/add/{post}', [UserController::class, 'addComment'])
+         ->name('add.comment.user');
+});
+
 
 /*
  |------------------------------
@@ -130,11 +161,11 @@ Route::group(['prefix' => 'writer', 'middleware' => ['auth']], function () {
  */
 Route::group([], function () {
 
-    Route::get('/', [PostController::class , 'index'])
+    Route::get('/', [PostController::class, 'index'])
          ->name('index.guest');
 
-    Route::get('/{post}/{slug}' , [PostController::class , 'showSinglePost'])
-        ->name('single.post.guest');
+    Route::get('/{post}/{slug}', [PostController::class, 'showSinglePost'])
+         ->name('single.post.guest');
 });
 
 
@@ -151,9 +182,3 @@ Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']
     Lfm::routes();
 });
 
-Route::get('/as' ,function (){
-    //writer_id = 42
-    //post id = 53
-   $p = \App\Models\Post::factory()->state(['id'=>43])->hasComments(3)->create();
-   dd(\App\Models\Post::with('comments')->where('id',53)->get()->toArray());
-});

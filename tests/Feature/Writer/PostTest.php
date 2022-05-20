@@ -3,6 +3,7 @@
 namespace Tests\Feature\Writer;
 
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Models\User;
@@ -30,6 +31,7 @@ class PostTest extends TestCase
      */
     public function test_post_slug_must_be_unique_validation()
     {
+
         $this->makeWriterLogin();
 
         $post = Post::factory()
@@ -279,6 +281,47 @@ class PostTest extends TestCase
         $res->assertSessionHas('delete-succ', 'Post Deleted SuccessFully');
     }
 
+    public function test_only_owner_can_see_comments()
+    {
+        $writer = $this->makeWriterLogin();
+
+        $writer2 = User::factory()
+                       ->writer()
+                       ->create();
+
+        $post = Post::factory()
+                    ->state(['writer_id' => $writer2->id])
+                    ->hasTags(3)
+                    ->hasCategories(3)
+                    ->create();
+
+
+        $res = $this->get(route('comment.post.writer', $post->id));
+
+        $res->assertForbidden();
+    }
+
+    public function test_show_a_post_comments()
+    {
+        $writer = $this->makeWriterLogin();
+
+        $post = Post::factory()
+                    ->state(['writer_id' => $writer->id])
+                    ->hasTags(3)
+                    ->hasComments(3)
+                    ->create();
+        //create comment
+        Comment::factory()
+               ->count(10)
+               ->state(['post_id' => $post->id])
+               ->create();
+
+
+        $this->get(route('comment.post.writer' ,$post->id))
+        ->assertViewIs('writer.commentlist');
+
+
+    }
     /*
      |------------------------------
      | private methods

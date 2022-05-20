@@ -18,17 +18,24 @@ class CreateCommentsTable extends Migration
             $table->id();
 
             $table->foreignId('user_id')
-                ->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+                  ->constrained('users')
+                  ->cascadeOnDelete()
+                  ->cascadeOnUpdate();
 
             $table->foreignId('post_id')
-                ->constrained('posts')->cascadeOnDelete()->cascadeOnUpdate();
+                  ->constrained('posts')
+                  ->cascadeOnDelete()
+                  ->cascadeOnUpdate();
 
             $table->foreignId('reply_id')
-                ->nullable()
-                ->constrained('comments')->references('id')
-                ->cascadeOnDelete()->cascadeOnUpdate();
+                  ->nullable()
+                  ->constrained('comments')
+                  ->references('id')
+                  ->cascadeOnDelete()
+                  ->cascadeOnUpdate();
 
-            $table->boolean('show');
+            $table->boolean('show')
+                  ->default(false);
             $table->string('text');
             $table->timestamps();
         });

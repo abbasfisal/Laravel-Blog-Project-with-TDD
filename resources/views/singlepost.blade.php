@@ -44,16 +44,55 @@
             <h5>Comments</h5>
             @if(!empty($post->comments))
                 @foreach($post->comments as $comment)
-                <div class="col-lg-8 border m-auto mt-4 rounded-2">
-                    <span class="badge bg-info">
+
+                    @if($comment->show)
+                        <div class="col-lg-8 border m-auto mt-4 rounded-2">
+                            <span class="badge bg-info">
                         {{$comment->user->name}}
                     </span>
-                    <b>
-                        {{$comment->text}}
-                    </b>
-                </div>
+                            <b>
+                                {{$comment->text}}
+                            </b>
+                        </div>
+                        @endif
                 @endforeach
             @endif
+        </div>
+        {{-- add comment --}}
+        <div class="col-lg-9 border m-auto mt-5">
+            <h4 class="badge bg-success">add comment</h4>
+
+            <form action="{{route('add.comment.user' ,$post->id)}}" method="post">
+                @csrf
+                @method('post')
+                <input type="hidden" name="post_id" value="{{$post->id}}">
+
+                <div class="form-group  m-auto">
+                <textarea type="text"
+
+                          class="form-control @error('text') is-invalid @enderror"
+                          id="text"
+                          name="text"
+                          placeholder="Enter your comment">{{old('text')}}</textarea>
+                    @error('text')
+                    <span class="invalid-feedback" role="alert">
+                     <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                    <br>
+                    @error('post_id')
+                    <span class="invalid-feedback" role="alert">
+                     <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                    <button
+                        class="btn btn-primary"
+                        type="submit">add a comment
+                    </button>
+
+                </div>
+            </form>
+
         </div>
 
     </div>

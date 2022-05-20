@@ -30,8 +30,6 @@ class WriterPostPolicy
      */
     public function view(User $user, Post $post)
     {
-
-
         return $user->id == $post->writer_id;
     }
 

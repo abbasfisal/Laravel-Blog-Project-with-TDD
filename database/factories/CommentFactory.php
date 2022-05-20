@@ -18,15 +18,28 @@ class CommentFactory extends Factory
     {
         return [
 
-            Comment::col_user_id => User::factory()->user(),
-            Comment::col_post_id => Post::factory(),
+            Comment::col_user_id  => User::factory()
+                                         ->user(),
+            Comment::col_post_id  => Post::factory(),
             Comment::col_reply_id => null,
-            Comment::col_show => true,
-            Comment::col_text => $this->faker->text(100),
+            Comment::col_show     => true,
+            Comment::col_text     => $this->faker->text(100),
         ];
     }
 
+    /**
+     * comment not allowed to show
+     * @return CommentFactory
+     */
+    public function noshow()
+    {
+        return $this->state(function (array $attributes) {
+            return [
 
+                'show' => false
+            ];
+        });
+    }
 
     /*public function reply()
     {

@@ -27,7 +27,9 @@
                     <th scope="col">#</th>
                     <th scope="col">title</th>
                     <th scope="col">slug</th>
-                    <th scope="col" class="text-center">opt</th>
+                    <th scope="col" class="text-center">comments</th>
+                    <th scope="col" class="text-center">edit</th>
+                    <th scope="col" class="text-center">delete</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -38,8 +40,18 @@
                         <td>{{$post->title}}</td>
                         <td>{{$post->slug}}</td>
                         <td class="text-center">
-                            <a href="{{route('edit.post.writer',$post->id)}}" class="btn btn-info">edit</a>
+                            <a href="{{route('comment.post.writer',$post->id)}} class="btn btn-primary badge badge-pill badge-warning">
 
+
+                                {{$post->comments()->count()}}
+
+
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <a href="{{route('edit.post.writer',$post->id)}}" class="btn btn-info">edit</a>
+                        </td>
+                        <td class="text-center">
                             <form method="post" action="{{route('delete.post.writer',$post->id)}}">
                                 @method('delete')
                                 @csrf
