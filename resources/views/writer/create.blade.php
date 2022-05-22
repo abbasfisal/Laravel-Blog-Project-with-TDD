@@ -23,7 +23,10 @@
 
     <div class="row">
         <div class="col-lg-10 border m-auto">
+
             <h3>Create new Post</h3>
+
+            <a  class="btn btn-primary" href="{{route('dashboard.writer')}}">Back</a>
 
             <form action="{{route('store.post.writer')}}" method="post">
 

@@ -4,6 +4,7 @@
     <div class="row">
         <div class="col-lg-9 m-auto ">
             <h4>Your Post Lists</h4>
+            <a  class="btn btn-primary" href="{{route('dashboard.writer')}}">Back</a>
 
             @if(!empty(session('update-fail')))
                 <div class="alert alert-danger">
@@ -41,11 +42,7 @@
                         <td>{{$post->slug}}</td>
                         <td class="text-center">
                             <a href="{{route('comment.post.writer',$post->id)}} class="btn btn-primary badge badge-pill badge-warning">
-
-
-                                {{$post->comments()->count()}}
-
-
+                             {{$post->comments()->count()}}
                             </a>
                         </td>
                         <td class="text-center">

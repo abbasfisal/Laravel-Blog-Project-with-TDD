@@ -12,6 +12,7 @@ use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -201,6 +202,7 @@ class WriterController extends Controller
 
             DB::commit();
             return redirect(route('list.post.writer'))->with('delete-succ', 'Post Deleted SuccessFully');
+
         } catch (\Exception $e) {
             Log::error($e);
 
@@ -224,7 +226,24 @@ class WriterController extends Controller
         $comment->update([
             Comment::col_show => $comment->show ? false : true
         ]);
-        return redirect()->back()->with('state' , 'comment show state changed' );
+        return redirect()
+            ->back()
+            ->with('state', 'comment show state changed');
+    }
+
+
+    public function getWriterPosts(User $user)
+    {
+        //check
+        if (!$user->type === User::type_writer)
+            abort(404);
+
+        $posts = $user->posts()
+                      ->paginate(2)
+                      ;
+
+
+        return view('postlist', compact('user' , 'posts'));
     }
 }
 

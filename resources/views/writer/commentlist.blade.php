@@ -2,9 +2,13 @@
 
 @section('content')
     <div class="row">
-        <div class="col-lg-10 m-auto border">
-            <h3>Comments</h3>
-            @if(!empty(session('state')))
+        <div class="col-lg-10 m-auto ">
+            <h3>Comments
+            for <a href="{{route('single.post.guest',[$post[0]['id'],$post[0]['slug']])}}">{{$post[0]['title']}}</a>
+            </h3>
+            <a  class="btn btn-primary" href="{{route('dashboard.writer')}}">Back</a>
+
+        @if(!empty(session('state')))
                 <div class="alert alert-info">
                     <b>{{session('state')}}</b>
                 </div>

@@ -121,15 +121,15 @@
 <div id="page_content">
 
     <!--HEADER IMAGE-->
-    <section id="bg-top-stories-img" class="bg-top-stories-img">
+    {{--<section id="bg-top-stories-img" class="bg-top-stories-img">
         <div class="overlay"></div>
-    </section>
-
+    </section>--}}
+    <br><br><br>
     <section id="search">
         <div class="container">
             <div class="row pt-sm-5">
                 <div class="col-12 col-lg-4 order-2 order-md-1">
-                    
+
 
 
                     <section id="popular_post">
@@ -144,26 +144,6 @@
                     </section>
 
                     {{--tags--}}
-                    <section id="tags">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-12 pr-0 pl-0">
-                                    <div class="outer_tag mt-4">
-                                        <h2 class="main_tag">Tags</h2>
-                                        <div class="inner_tag">
-                                            <div class="tag_text">
-                                                @foreach($tags as $tag)
-                                                    <span><a href="">{{$tag['title']}}</a></span>
-                                                @endforeach
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
 
 
                 </div>

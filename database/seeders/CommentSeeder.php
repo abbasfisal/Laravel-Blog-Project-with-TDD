@@ -17,7 +17,14 @@ class CommentSeeder extends Seeder
      */
     public function run()
     {
-        $f = Factory::create();
+        Post::factory()
+            ->hasTags(10)
+            ->hasCategories(3)
+            ->hasComments(20)
+            ->create();
+
+
+     /*   $f = Factory::create();
 
         //create 3 normall user
         list($user1, $user2, $user3) = $this->createUsers();
@@ -26,10 +33,10 @@ class CommentSeeder extends Seeder
         $post = null;
 
         //create post
-        list($post, $mainCommentId) = $this->createPost($f, $user1, $post, $mainCommentId);
+        list($post, $mainCommentId) = $this->createPost($f, $user1, $post, $mainCommentId);*/
 
         //create Reply
-        $this->createReplyaComment($mainCommentId, $user2, $post, $f, $user3);
+        // $this->createReplyaComment($mainCommentId, $user2, $post, $f, $user3);
 
 
     }
@@ -43,21 +50,25 @@ class CommentSeeder extends Seeder
      */
     private function createReplyaComment($mainCommentId, $user2, $post, \Faker\Generator $f, $user3): void
     {
-        Comment::query()->where('id', $mainCommentId)->create([
-            'user_id' => $user2,
-            'post_id' => $post->id,
-            'reply_id' => $mainCommentId,
-            'show' => true,
-            'text' => 'Reply Comment Id ' . $mainCommentId . ' = ' . $f->text(60)
-        ]);
+        Comment::query()
+               ->where('id', $mainCommentId)
+               ->create([
+                   'user_id'  => $user2,
+                   'post_id'  => $post->id,
+                   'reply_id' => $mainCommentId,
+                   'show'     => true,
+                   'text'     => 'Reply Comment Id ' . $mainCommentId . ' = ' . $f->text(60)
+               ]);
 
-        Comment::query()->where('id', $mainCommentId)->create([
-            'user_id' => $user3,
-            'post_id' => $post->id,
-            'reply_id' => $mainCommentId,
-            'show' => true,
-            'text' => 'Reply Comment Id ' . $mainCommentId . ' = ' . $f->text(60)
-        ]);
+        Comment::query()
+               ->where('id', $mainCommentId)
+               ->create([
+                   'user_id'  => $user3,
+                   'post_id'  => $post->id,
+                   'reply_id' => $mainCommentId,
+                   'show'     => true,
+                   'text'     => 'Reply Comment Id ' . $mainCommentId . ' = ' . $f->text(60)
+               ]);
     }
 
     /**
@@ -65,9 +76,18 @@ class CommentSeeder extends Seeder
      */
     private function createUsers(): array
     {
-        $user1 = User::factory()->count(1)->user()->create()[0]['id'];
-        $user2 = User::factory()->count(1)->user()->create()[0]['id'];
-        $user3 = User::factory()->count(1)->user()->create()[0]['id'];
+        $user1 = User::factory()
+                     ->count(1)
+                     ->user()
+                     ->create()[0]['id'];
+        $user2 = User::factory()
+                     ->count(1)
+                     ->user()
+                     ->create()[0]['id'];
+        $user3 = User::factory()
+                     ->count(1)
+                     ->user()
+                     ->create()[0]['id'];
         return array($user1, $user2, $user3);
     }
 
@@ -80,15 +100,18 @@ class CommentSeeder extends Seeder
      */
     private function createPost(\Faker\Generator $f, $user1, $post, $mainCommentId): array
     {
-        Post::factory()->create()->each(function ($p) use ($f, $user1, &$post, &$mainCommentId) {
-            $post = $p;
-            $mainCommentId = $p->comments()->create([
-                'user_id' => $user1,
-                'show' => true,
-                'text' => 'Main Comment ' . $f->text(60)
-            ])->id;
+        Post::factory()
+            ->create()
+            ->each(function ($p) use ($f, $user1, &$post, &$mainCommentId) {
+                $post = $p;
+                $mainCommentId = $p->comments()
+                                   ->create([
+                                       'user_id' => $user1,
+                                       'show'    => true,
+                                       'text'    => 'Main Comment ' . $f->text(60)
+                                   ])->id;
 
-        });
+            });
         return array($post, $mainCommentId);
     }
 }

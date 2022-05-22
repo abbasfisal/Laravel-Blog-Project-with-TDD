@@ -22,8 +22,13 @@
     </script>
 
     <div class="row">
-        <div class="col-lg-10 border m-auto">
+        <div class="col-lg-10 border m-auto rounded-3 bg-white shadow ">
+            <br>
             <h3>Edit Post</h3>
+            <a class="btn btn-primary" href="{{route('dashboard.writer')}}">Back</a>
+            <a class="btn btn-outline-info" target="_blank"
+               href="{{route('single.post.guest',[$post->id ,$post->slug])}}">See {{$post->title}}</a>
+
 
             <form action="{{route('update.post.writer',$post->id)}}" method="post">
 
@@ -158,6 +163,8 @@
                     <br>
                     <br>
                     <button type="submit" class="btn btn-info">Update Post</button>
+                    <br>
+                    <br>
                 </div>
 
             </form>

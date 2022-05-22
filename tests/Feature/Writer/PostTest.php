@@ -317,11 +317,57 @@ class PostTest extends TestCase
                ->create();
 
 
-        $this->get(route('comment.post.writer' ,$post->id))
-        ->assertViewIs('writer.commentlist');
+        $this->get(route('comment.post.writer', $post->id))
+             ->assertViewIs('writer.commentlist');
 
 
     }
+
+    /**
+     * show writer all posts
+     */
+    public function test_select_post_by_title()
+    {
+        $write = User::factory()
+                     ->writer()
+                     ->create();
+
+        //10 posts
+        $posts = Post::factory()
+                     ->state(['writer_id' => $write->id, 'body' => 'im body'])
+                     ->count(10)
+                     ->hasTags(3)
+                     ->hasCategories(3)
+                     ->create();
+
+        $this->get(route('get.post.writer', $write->id))
+             ->assertViewIs('postlist')
+             ->assertViewHas('posts');
+
+        $this->assertDatabaseCount('posts', 10);
+
+    }
+
+    public function test_get_posts_by_category()
+    {
+        $writer = User::factory()
+                      ->writer()
+                      ->create();
+        $posts = Post::factory()
+                     ->state(['writer_id' => $writer->id])
+                     ->count(5)
+                     ->hasCategories(4)
+                     ->create();
+
+        $cats = Category::query()
+                        ->limit(1)
+                        ->get()
+                        ->pluck('id');
+        //dd($cats);
+
+        $this->get(route('get.categories.post'));
+    }
+
     /*
      |------------------------------
      | private methods

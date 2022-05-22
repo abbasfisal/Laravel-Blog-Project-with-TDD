@@ -59,7 +59,8 @@
 
             <div class="col-6">
                 <div class="logo ml-auto mr-auto width-logo text-center mt-2 mt-md-3">
-                    <a href="{{route('index.guest')}}"><img src="{{asset('blog/images/logo.png')}}" alt="Logo Img"></a>
+                    <a href="{{route('index.guest')}}">
+                        <img src="{{asset('blog/images/logo.png')}}" alt="Logo Img"></a>
                 </div>
             </div>
 
@@ -120,100 +121,63 @@
 
 <div id="page_content">
 
-    <!--HEADER IMAGE-->
-    <section id="bg-top-stories-img" class="bg-top-stories-img">
-        <div class="overlay"></div>
-    </section>
 
     <section id="search">
         <div class="container">
-            <div class="row pt-sm-5">
-                <div class="col-12 col-lg-4 order-2 order-md-1">
-                    
+            <div class="col-sm-12 col-md-12 col-lg-8 pt-sm-4 pt-md-0 pt-lg-0 order-1 order-md-2">
+                <div class="written">
+                    <div class="written_outerbox mt-5 display">
+                        <div class="written_text">
+                            <p class="date text-black">WRITTEN BY</p>
+                            {{--writer--}}
 
+                            <h1 class="main_written text-black">{{$user->name}}</h1>
 
-                    <section id="popular_post">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-12 p-0">
-                                    {{--poplular post--}}
-
-                                </div>
-                            </div>
                         </div>
-                    </section>
-
-                    {{--tags--}}
-                    <section id="tags">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-12 pr-0 pl-0">
-                                    <div class="outer_tag mt-4">
-                                        <h2 class="main_tag">Tags</h2>
-                                        <div class="inner_tag">
-                                            <div class="tag_text">
-                                                @foreach($tags as $tag)
-                                                    <span><a href="">{{$tag['title']}}</a></span>
-                                                @endforeach
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-
+                    </div>
                 </div>
 
-                <div class="col-sm-12 col-md-12 col-lg-8 pt-sm-4 pt-md-0 pt-lg-0 order-1 order-md-2">
+                <div class="divider"></div>
+            @foreach($user->posts as $post)
+                <!--..................MINIMAL POST....-->
+                    <div class="minimal_image mt-sm-10 mt-md-0 mt-lg-0 ">
+                        <section class="min-post">
 
-                @foreach($posts as $post)
-                    <!--..................MINIMAL POST....-->
-                        <div class="minimal_image mt-sm-10 mt-md-0 mt-lg-0">
-                            <section class="min-post">
+                            <img src="{{$post->cover}}" alt="Blog Image">
+                        </section>
+                    </div>
+                    <div class="text_minimal  ">
+                        <a class="text-black" href="{{route('single.post.guest',[$post->id,$post->slug])}}">
+                            <h2>{{\Illuminate\Support\Str::upper($post->title)}}</h2></a>
+                        <div class="display">
 
-                                <img src="{{$post->cover}}" alt="Blog Image">
-                            </section>
+                            <p class="badge-pill bg-info">{{$post->created_at->diffForHumans()}}</p>
+                            <div class="verticle_line margin_1 bg-black"></div>&nbsp;
+
+                            <p class="badge-pill bg-primary">
+                                {{$post->comments()->where('show',true)->count()}} comments</p>
+                            &nbsp;<div class="verticle_line margin bg-black"></div>
+                            &nbsp;<h5>{{$post->writer->name}}</h5>
                         </div>
-                        <div class="text_minimal">
-                            <a class="text-black" href="{{route('single.post.guest',[$post->id,$post->slug])}}">
-                                <h2>{{\Illuminate\Support\Str::upper($post->title)}}</h2></a>
-                            <div class="display">
+                        <p class="sub-heading text-grey">
+                            {!!\Illuminate\Support\Str::limit($post->body,400) !!}
+                        </p>
+                        <a href="{{route('single.post.guest',[$post->id,$post->slug])}}"
+                           class="btn btn-large btn-primary">Read More</a>
+                    </div>
+                    <div class="divider"></div>
 
-                                <p class="badge-pill bg-info">{{$post->created_at->diffForHumans()}}</p>
-                                <div class="verticle_line margin_1 bg-black"></div>&nbsp;
-
-                                <p class="badge-pill bg-primary">
-                                    {{$post->comments()->where('show',true)->count()}} comments</p>
-                                &nbsp;<div class="verticle_line margin bg-black"></div>
-                                &nbsp;<h5>
-                                    <a href="{{route('get.post.writer' ,$post->writer_id)}}">
-                                    {{$post->writer->name}}
-                                    </a>
-                                </h5>
-                            </div>
-                            <p class="sub-heading text-grey">
-                                {!!\Illuminate\Support\Str::limit($post->body,400) !!}
-                            </p>
-                            <a href="{{route('single.post.guest',[$post->id,$post->slug])}}"
-                               class="btn btn-large btn-primary">Read More</a>
-                        </div>
-                        <div class="divider1"></div>
+            @endforeach
 
 
-                @endforeach
+
+            <!--..........PAGINATION..........-->
+                {{$posts->links()}}
 
 
-                <!--..........PAGINATION..........-->
-                    {{$posts->links()}}
-
-
-                </div>
             </div>
         </div>
+
     </section>
 
     <!--  START FOOTER SECTION  -->

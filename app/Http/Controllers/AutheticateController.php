@@ -36,7 +36,7 @@ class AutheticateController extends Controller
 
                 case User::type_user:
                     //TODO درست کن وقتی نوبت یوزر عادی شد
-                    return 'normal user loged in success ';
+                    return redirect(route("index.guest"));
 
                 default:
                     abort(403);
@@ -58,6 +58,7 @@ class AutheticateController extends Controller
     public function logout(LogOutRequest $request)
     {
         Auth::logout();
+        return redirect(route('index.guest'));
         return redirect(route('login'));
     }
 }

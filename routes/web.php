@@ -25,7 +25,7 @@ Route::get('/login', [AutheticateController::class, 'showLoginForm'])
 Route::post('/login', [AutheticateController::class, 'login'])
      ->name('login');
 
-Route::post('/logout', [AutheticateController::class, 'logout'])
+Route::any('/logout', [AutheticateController::class, 'logout'])
      ->name('logout')
      ->middleware('auth');
 
@@ -129,8 +129,8 @@ Route::group(['prefix' => 'writer', 'middleware' => ['auth']], function () {
     Route::get('/post/comments/{post}', [WriterController::class, 'showPostComments'])
          ->name('comment.post.writer');
 
-        Route::get('/post/{comment}', [WriterController::class, 'changeStateComment'])
-             ->name('state.comments.writer');
+    Route::get('/post/{comment}', [WriterController::class, 'changeStateComment'])
+         ->name('state.comments.writer');
 
 
 });
@@ -166,6 +166,19 @@ Route::group([], function () {
 
     Route::get('/{post}/{slug}', [PostController::class, 'showSinglePost'])
          ->name('single.post.guest');
+
+
+    //get writer posts by writer id
+    Route::get('/writer/posts/{user}', [WriterController::class, 'getWriterPosts'])
+         ->name('get.post.writer');
+
+    //select posts by category
+    Route::get('/post/categories/{category}', [PostController::class, 'getPostByCategories'])
+         ->name('get.categories.post');
+
+    //select posts by tags
+    Route::get('/post/tags/{tag}', [PostController::class, 'getPostByTags'])
+         ->name('get.tags.post');
 });
 
 
@@ -182,3 +195,9 @@ Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']
     Lfm::routes();
 });
 
+
+Route::get('/s', function () {
+    $f = \Faker\Factory::create();
+
+    return view('layouts.blank');
+});
