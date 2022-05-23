@@ -205,7 +205,5 @@ Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']
 
 
 Route::get('/s', function () {
-    $f = \Faker\Factory::create();
 
-    return view('layouts.blank');
 });

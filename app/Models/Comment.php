@@ -48,11 +48,12 @@ class Comment extends Model
      */
     public function reply()
     {
-        return $this->belongsTo(
+        return $this->hasMany(Comment::class, self::col_reply_id);
+        /*return $this->belongsTo(
             Comment::class,
             self::col_reply_id,
             self::col_id
-        );
+        );*/
     }
 
     public function likes()

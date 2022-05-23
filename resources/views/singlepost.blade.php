@@ -37,9 +37,9 @@
                                 <h5>Comments</h5>
                                 @if(!empty($post->comments))
                                     @foreach($post->comments as $comment)
-                                        @if($comment->show)
+                                        @if($comment->show && $comment->reply_id == null)
                                             <div class="icon_comment">
-                                                {{--<i class="far fa-user user_icon"></i>--}}
+                                                
                                                 <div class="icon_text">
                                                     <b class="badge bg-info">{{$comment->user->name}}</b>
                                                     <p class="date margin_days text-black">{{$comment->created_at->diffForHumans()}}</p>
@@ -47,9 +47,20 @@
                                                         {{$comment->text}}
                                                     </p>
                                                 </div>
+
+
                                             </div>
-                                            {{-- {{$comment->user->name}}
-                                             {{$comment->text}}--}}
+                                            {{--comment replies--}}
+                                            @foreach($comment->reply as $c_reply)
+                                                <div class="col " style="border-left:1px solid green">
+                                                    <b class="badge bg-success">{{$c_reply->user->name}} replied to
+                                                        :{{$comment->user->name}}</b>
+                                                    <p class="date margin_days text-black">{{$c_reply->created_at->diffForHumans()}}</p>
+                                                    <p class="sub-heading mt-1">
+                                                        {{$c_reply->text}}
+                                                    </p>
+                                                </div>
+                                            @endforeach
                                         @endif
                                     @endforeach
                                 @endif
