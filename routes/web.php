@@ -29,6 +29,14 @@ Route::any('/logout', [AutheticateController::class, 'logout'])
      ->name('logout')
      ->middleware('auth');
 
+//show register form
+Route::get('/register', [AutheticateController::class, 'showRegisterForm'])
+     ->name('register');
+
+//regsiter normall user
+Route::post('/register', [AutheticateController::class, 'register'])
+     ->name('register.normall.user');
+
 /*
  |------------------------------
  | admin routes

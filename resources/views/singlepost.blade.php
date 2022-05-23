@@ -181,7 +181,7 @@
                             <div class="display mt-3 comment_text text-center">
                                 <h5><a href="{{route('login')}}" class="badge-pill badge-warning">Login</a></h5>
                                 &nbsp;<div class="verticle_line margin bg-black"></div>&nbsp;
-                                <h5><a href="#" class="badge-pill badge-warning">Register</a></h5>
+                                <h5><a href="{{route('register')}}" class="badge-pill badge-warning">Register</a></h5>
                                 <h3>to Write a comment</h3>
                             </div>
                         @endguest

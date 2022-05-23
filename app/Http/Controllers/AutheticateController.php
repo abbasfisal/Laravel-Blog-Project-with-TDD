@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\LogOutRequest;
+use App\Http\Requests\RegisterNormallUserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class AutheticateController extends Controller
 {
@@ -59,6 +62,33 @@ class AutheticateController extends Controller
     {
         Auth::logout();
         return redirect(route('index.guest'));
-        return redirect(route('login'));
+    }
+
+    /**
+     * show register form
+     */
+    public function showRegisterForm()
+    {
+        return view('auth.register');
+    }
+
+    public function register(RegisterNormallUserRequest $request)
+    {
+        try {
+
+            $user = User::query()
+                        ->create([
+                            User::col_name     => $request->name,
+                            User::col_email    => $request->email,
+                            User::col_password => Hash::make($request->password),
+                            User::col_type     => User::type_user
+                        ]);
+            Auth::login($user);
+            return redirect(route('index.guest'));
+        } catch (\Exception $e) {
+            Log::error($e);
+            abort(500);
+        }
+
     }
 }

@@ -78,9 +78,35 @@ class AuthenticationTest extends TestCase
 
         $resp->assertRedirect(route('dashboard.writer'));
 
-        //TODO باید این تست درست در بیاد که بعد لاگین این ویو رو نشون بده
-        //$resp->assertViewIs('writer.index');
 
+    }
+
+
+    /**
+     * show register form
+     */
+    public function test_show_register_form()
+    {
+        $this->get(route('register'))
+             ->assertViewIs('auth.register');
+    }
+
+    /**
+     * register a new user
+     */
+    public function test_regsiter_new_normall_user()
+    {
+        $data = [
+            'name'                  => 'alireza',
+            'email'                 => 'alireza@a.b',
+            'password'              => '1234',
+            'password_confirmation' => '1234'
+        ];
+
+        $res = $this->post(route('register.normall.user'), $data);
+
+        $this->assertDatabaseHas('users', ['name' => 'alireza', 'email' => 'alireza@a.b']);
+        $res->assertRedirect(route('index.guest'));
     }
 
 
