@@ -178,8 +178,7 @@
                             <p class="sub-heading text-grey">
                                 {!!\Illuminate\Support\Str::limit($post->body,400) !!}
                             </p>
-                            <a href="{{route('single.post.guest',[$post->id,$post->slug])}}"
-                               class="btn btn-large btn-primary">Read More</a>
+
                         </div>
                         <div class="divider1"></div>
 

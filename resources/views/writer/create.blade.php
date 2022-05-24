@@ -22,11 +22,29 @@
     </script>
 
     <div class="row">
-        <div class="col-lg-10 border m-auto">
-
+        <div class="col-lg-10  rounded-3 shadow m-auto">
+            <br>
             <h3>Create new Post</h3>
 
-            <a  class="btn btn-primary" href="{{route('dashboard.writer')}}">Back</a>
+            <br>
+            <a href="{{route('dashboard.writer')}}"
+               class="link text-decoration-none link-warning border rounded-3 p-2 shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                     class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                </svg>
+                Back
+            </a>
+            <br>
+            <br>
+
+            @if(session('msg'))
+                <span class="border shadow " role="alert">
+                     <strong>{{ session('msg')}}</strong>
+                </span>
+            @endif
+
 
             <form action="{{route('store.post.writer')}}" method="post">
 
@@ -142,7 +160,10 @@
                     </span>
                     @enderror
                     <br>
-                    <button type="submit" class="btn btn-info">Create New</button>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Create New</button>
+                    </div>
+                    <br>
                 </div>
 
             </form>

@@ -86,11 +86,16 @@ class WriterController extends Controller
 
             DB::commit();
 
+            return redirect()
+                ->route('new.post.writer')
+                ->with('msg', 'New Post Created Successfully');
 
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error($e);
-            dd($e);
+            return redirect()
+                ->route('new.post.writer')
+                ->with('msg', 'Fail To create New Post . Try again');
 
         }
 
@@ -239,11 +244,10 @@ class WriterController extends Controller
             abort(404);
 
         $posts = $user->posts()
-                      ->paginate(2)
-                      ;
+                      ->paginate(2);
 
 
-        return view('postlist', compact('user' , 'posts'));
+        return view('postlist', compact('user', 'posts'));
     }
 }
 

@@ -1,8 +1,7 @@
 @extends('layouts.user')
+
 @section('content')
     <div id="page_content">
-
-
         <section id="search">
             <div class="container">
                 <div class="row pt-lg-5">
@@ -16,13 +15,15 @@
                             {!! $post->body !!}
                         </div>
 
-                        <div class="written">
-                            <div class="written_outerbox mt-5 display">
-                                <div class="written_text">
+                        <div class="written  " >
+                            <div class="written_outerbox mt-5 display shadow " style="border-radius: 10px  !important;">
+                                <div class="written_text" >
                                     <p class="date text-black">WRITTEN BY</p>
                                     {{--writer--}}
-                                    <a href="{{route('get.post.writer' ,$post->writer_id)}}">
-                                        <h1 class="main_written text-black">{{$post->writer->name}}</h1>
+                                    <a
+                                        class="text-decoration-underline"
+                                        href="{{route('get.post.writer' ,$post->writer_id)}}">
+                                        <h1 class="main_written">{{$post->writer->name}}</h1>
                                     </a>
                                 </div>
                             </div>
@@ -32,38 +33,10 @@
 
 
                             {{--show comments --}}
-
                             <div class="comment_write pt-5">
                                 <h5>Comments</h5>
-                                @if(!empty($post->comments))
-                                    @foreach($post->comments as $comment)
-                                        @if($comment->show && $comment->reply_id == null)
-                                            <div class="icon_comment">
-                                                
-                                                <div class="icon_text">
-                                                    <b class="badge bg-info">{{$comment->user->name}}</b>
-                                                    <p class="date margin_days text-black">{{$comment->created_at->diffForHumans()}}</p>
-                                                    <p class="sub-heading mt-1">
-                                                        {{$comment->text}}
-                                                    </p>
-                                                </div>
+                                @include('layouts._partials_comment',['comments'=>$post->comments])
 
-
-                                            </div>
-                                            {{--comment replies--}}
-                                            @foreach($comment->reply as $c_reply)
-                                                <div class="col " style="border-left:1px solid green">
-                                                    <b class="badge bg-success">{{$c_reply->user->name}} replied to
-                                                        :{{$comment->user->name}}</b>
-                                                    <p class="date margin_days text-black">{{$c_reply->created_at->diffForHumans()}}</p>
-                                                    <p class="sub-heading mt-1">
-                                                        {{$c_reply->text}}
-                                                    </p>
-                                                </div>
-                                            @endforeach
-                                        @endif
-                                    @endforeach
-                                @endif
 
 
                             </div>
@@ -126,10 +99,10 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-12 pr-0 pl-0">
-                                        <div class="topic_outerbox mt-4">
+                                        <div class="topic_outerbox mt-4  shadow rounded-3" style="border-radius: 5px !important;">
                                             <h2>Categories</h2>
                                             <div class="inner-box">
-                                                <div class="tag_text">
+                                                <div class="tag_text" >
                                                     @foreach($post->categories as $cat)
                                                         <span>
                                                     <a href="{{route('get.categories.post',$cat->id)}}"
@@ -145,37 +118,13 @@
                             </div>
                         </section>
 
-                        <section id="popular_post">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-12 p-0">
-                                        <div class="outer_popular mt-4">
-                                            <h2 class="text-black">Popular Post</h2>
-                                            <div class="outer mt-4 display">
-                                                <div class="popular_image">
-                                                    <a href="detail-blog.html">
-                                                        <img src="{{$post->cover}}" alt="popular image"></a>
-                                                </div>
-                                                <div class="text_post">
-                                                    <p class="main"> Minimal Post...</p>
-                                                    <p class="date">August 13, 2019 by</p><span>Mark Edison</span>
-                                                </div>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-
                         <section id="tags">
-                            <div class="container">
+                            <div class="container ">
                                 <div class="row">
-                                    <div class="col-12 pr-0 pl-0">
-                                        <div class="outer_tag mt-4">
-                                            <h2 class="main_tag">Tags</h2>
-                                            <div class="inner_tag">
+                                    <div class="col-12 pr-0 pl-0 ">
+                                        <div class="outer_tag mt-4  shadow rounded-3" style="border-radius: 5px !important;">
+                                            <h2 class="main_tag ">Tags</h2>
+                                            <div class="inner_tag ">
                                                 <div class="tag_text">
                                                     @foreach($post->tags as $tag)
                                                         <span>

@@ -56,15 +56,19 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'can:admin']], funct
      |
      |
      */
+    //show create form
     Route::get('/writer/new', [AdminController::class, 'newWriterForm'])
          ->name('new.writer.admin');
 
+    //store new writer
     Route::post('/writer/store', [AdminController::class, 'storeWriter'])
          ->name('store.writer.admin');
 
+    //writer list
     Route::get('/writer/list', [AdminController::class, 'showWriterList'])
          ->name('list.writer.admin');
 
+    //writer posts
     Route::get('/writer/posts/{user}', [AdminController::class, 'showWriterPosts'])
          ->name('posts.writer.admin');
 
@@ -206,4 +210,26 @@ Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']
 
 Route::get('/s', function () {
 
+    $p = \App\Models\Post::find(1)
+                         ->first();
+
+
+    foreach ($p->comments as $c) {
+        echo $c->text;
+        foreach ($c->reply as $cr) {
+            echo $cr->text;
+            foreach ($cr->reply as $cc) {
+                echo $cc->text;
+                //dd($cc->toArray());
+                foreach ($cc->reply as $cx) {
+                    dd($cx->toArray());
+                    echo $cx->text;
+                }
+            }
+            //dd($cr->toArray());
+            echo $cr->text;
+        }
+        echo "<hr>";
+    }
+    echo "</pre>";
 });

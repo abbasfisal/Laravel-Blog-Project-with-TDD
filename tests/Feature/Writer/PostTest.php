@@ -353,6 +353,7 @@ class PostTest extends TestCase
         $writer = User::factory()
                       ->writer()
                       ->create();
+
         $posts = Post::factory()
                      ->state(['writer_id' => $writer->id])
                      ->count(5)
@@ -365,7 +366,9 @@ class PostTest extends TestCase
                         ->pluck('id');
         //dd($cats);
 
-        $this->get(route('get.categories.post'));
+        //$this->get(route('get.categories.post', $cats[0]['id']));
+
+
     }
 
     /*

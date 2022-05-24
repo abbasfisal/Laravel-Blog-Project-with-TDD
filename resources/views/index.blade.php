@@ -51,25 +51,25 @@
                     </div>
 
                     <div class="col-sm-12 col-md-12 col-lg-8 pt-sm-4 pt-md-0 pt-lg-0 order-1 order-md-2">
-
                     @foreach($posts as $post)
                         <!--..................MINIMAL POST....-->
                             <div class="minimal_image mt-sm-10 mt-md-0 mt-lg-0">
                                 <section class="min-post">
-
                                     <img src="{{$post->cover}}" alt="Blog Image">
                                 </section>
                             </div>
                             <div class="text_minimal">
                                 <a class="text-black" href="{{route('single.post.guest',[$post->id,$post->slug])}}">
-                                    <h2>{{\Illuminate\Support\Str::upper($post->title)}}</h2></a>
+                                    <h2>{{\Illuminate\Support\Str::upper($post->title)}}</h2>
+                                </a>
+                                <br>
                                 <div class="display">
-
                                     <p class="badge-pill bg-info">{{$post->created_at->diffForHumans()}}</p>
                                     <div class="verticle_line margin_1 bg-black"></div>&nbsp;
 
                                     <p class="badge-pill bg-primary">
-                                        {{$post->comments()->where('show',true)->count()}} comments</p>
+                                        {{$post->comments()->where('show',true)->count()}} comments
+                                    </p>
                                     &nbsp;<div class="verticle_line margin bg-black"></div>
                                     &nbsp;<h5>
                                         <a href="{{route('get.post.writer' ,$post->writer_id)}}">
@@ -80,10 +80,9 @@
                                 <p class="sub-heading text-grey">
                                     {!!\Illuminate\Support\Str::limit($post->body,400) !!}
                                 </p>
-                                <a href="{{route('single.post.guest',[$post->id,$post->slug])}}"
-                                   class="btn btn-large btn-primary">Read More</a>
                             </div>
-                            <div class="divider1"></div>
+
+                           <div class="divider"></div>
 
 
                     @endforeach

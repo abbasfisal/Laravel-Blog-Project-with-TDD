@@ -3,10 +3,24 @@
 @section('content')
     <div class="row">
         <div class="col-lg-10 m-auto ">
-            <h3>Comments
-            for <a href="{{route('single.post.guest',[$post[0]['id'],$post[0]['slug']])}}">{{$post[0]['title']}}</a>
+            <h3>Comments for
+                <a
+                    class="badge badge-info bg-success text-decoration-none"
+                    href="{{route('single.post.guest',[$post[0]['id'],$post[0]['slug']])}}">{{$post[0]['title']}}</a>
             </h3>
-            <a  class="btn btn-primary" href="{{route('dashboard.writer')}}">Back</a>
+
+            <br>
+            <a href="{{route('dashboard.writer')}}"
+               class="link text-decoration-none link-warning border rounded-3 p-2 shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                     class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                </svg>
+                Back
+            </a>
+            <br>
+            <br>
 
         @if(!empty(session('state')))
                 <div class="alert alert-info">
