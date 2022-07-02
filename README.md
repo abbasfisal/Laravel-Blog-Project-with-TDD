@@ -6,7 +6,7 @@
 ## Table of Content
 1. [Admin Panel Shots](#admin-panel-shots)
 1. [User Types](#user-types)   
-1. [Database](#Database)
+1. [Database](#database)
 1. [Admin Abiliities](#admin-abilities)
 1. [Writer Abilities](#writer-abilities)
 1. [User Abilities](#user-abilities)
@@ -15,17 +15,6 @@
 ## Admin Panel Shots
 Here You Can See Admin Panel View
 
-<details open>
-<summary><h3>Admin Panel shots :point_down: :framed_picture: </h3>	</summary>
-    
-</details>
-
-
-## Database
-
-Here is Blog Database Schema
-
-![blog](https://user-images.githubusercontent.com/10767713/177008216-55ef1dd2-5b9f-420b-9e72-fe4b8f721654.png)
 
 <details>
 <summary><h3>Admin Panel shots :point_down: :framed_picture:</h3>	</summary>
@@ -34,6 +23,13 @@ Here is Blog Database Schema
 
 
 </details>
+
+## Database
+
+Here is Blog Database Schema
+
+![blog](https://user-images.githubusercontent.com/10767713/177008216-55ef1dd2-5b9f-420b-9e72-fe4b8f721654.png)
+
 
 ## User Types
 _we have these user types_
