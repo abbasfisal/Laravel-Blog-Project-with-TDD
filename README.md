@@ -25,6 +25,10 @@ Here is Blog Database Schema
 
 <details>
 <summary><h3>Admin Panel shots :point_down: </h3>	</summary>
+
+![image](https://user-images.githubusercontent.com/10767713/177007653-6c8af1a8-3b5c-4dad-8338-49c9fac74e37.png)
+
+
 </details>
 
 ## User Types
