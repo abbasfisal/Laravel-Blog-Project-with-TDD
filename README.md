@@ -40,14 +40,21 @@ _we have these user types_
 |2|`writer`|writer can write posts|
 |3|`user`|user can see posts |
 ## Admin Abilities
-* admin can define a new writer for write posts
+1. Define `new Writer`
+1. `See` Each Writer Posts
+1. Define `New Category` 
+1. `See` All Category
+
 ## Writer Abilities
 1. Write Posts
+1. Define `Tags` for a Post   
 1. See Post Comments
-1. Able to Reply Comment
+1. Able to approve comments to show them under a post   
+1. `TODO`Able to Reply Comment
 
 ## User Abilities
-* Able to See Posts and Write Comments
+* Able to See Posts 
+* Write Comments 
 
 ## Model Relations
 
