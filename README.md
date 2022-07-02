@@ -17,6 +17,7 @@ Here You Can See Admin Panel View
 
 <details open>
 <summary><h3>Admin Panel shots :point_down: :framed_picture: </h3>	</summary>
+    
 </details>
 
 
@@ -59,13 +60,20 @@ _we have these user types_
 1. `TODO`Able to Reply Comment
 
 
-
+<details>
+    
 <summary>
 <h4>shots :framed_picture:</h4>
 </summary>
 
 ![image](https://user-images.githubusercontent.com/10767713/177008061-07943e92-bf0c-4bee-9e39-75eaec654956.png)
 
+
+![image](https://user-images.githubusercontent.com/10767713/177008089-ea261548-1771-44a1-bff7-23bd6567c2cc.png)
+
+![image](https://user-images.githubusercontent.com/10767713/177008107-71d79094-9ce9-4a47-aec0-535e9d92456b.png)
+
+![image](https://user-images.githubusercontent.com/10767713/177008132-6ce4d5ff-d593-421b-a4ee-1ef58869663f.png)
 
 </details>
 
@@ -82,12 +90,6 @@ _we have these user types_
 </summary>
 
 ![image](https://user-images.githubusercontent.com/10767713/177008027-d7a2c923-16c4-4ae3-89bb-b29e32efd3b1.png)
-
-![image](https://user-images.githubusercontent.com/10767713/177008089-ea261548-1771-44a1-bff7-23bd6567c2cc.png)
-
-![image](https://user-images.githubusercontent.com/10767713/177008107-71d79094-9ce9-4a47-aec0-535e9d92456b.png)
-
-![image](https://user-images.githubusercontent.com/10767713/177008132-6ce4d5ff-d593-421b-a4ee-1ef58869663f.png)
 
 
 </details>
